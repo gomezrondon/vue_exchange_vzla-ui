@@ -1,0 +1,3 @@
+docker build -t [APP_NAME]:latest .
+docker tag [APP_NAME]:latest gcr.io/[PROJECT-ID]/[APP_NAME]:v[APP_VERSION]
+docker push gcr.io/[PROJECT-ID]/[APP_NAME]:v[APP_VERSION]
