@@ -45,7 +45,7 @@ export default {
     }, handleSubmit() {
 
       if (this.isTasaValid()) {
-        this.monto_vender = this.monto_esperado * this.tasa_vzla / this.tasa_externa;
+        this.monto_vender = (this.monto_esperado * this.tasa_vzla / this.tasa_externa).toFixed(2);
         console.log('tasa_vzla ' + this.tasa_vzla);
         console.log('tasa_externa ' + this.tasa_externa);
         console.log('monto_esperado ' + this.monto_esperado);
