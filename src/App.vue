@@ -1,14 +1,15 @@
 <template>
-  <form_exchange/>
+  <algo/>
 </template>
 
 <script>
 import form_exchange from './components/from-ex.vue'
+import algo from './components/UploadFiles.vue'
 
 export default {
   name: 'App',
   components: {
-    form_exchange
+    algo
   }
 }
 </script>

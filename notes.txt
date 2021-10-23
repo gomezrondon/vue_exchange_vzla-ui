@@ -3,3 +3,14 @@ https://vuejs.org/v2/cookbook/dockerize-vuejs-app.html
 
 /----- my builder
 java -jar k-cloud-run-builder-all.jar vue_exchange_vzla-ui [project-id] [version] true
+
+
+https://www.bezkoder.com/vue-axios-file-upload/
+
+axios.get("http://my-server:8080/reports/my-sample-report/",
+        {
+            responseType: 'arraybuffer',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/pdf'
+            }
