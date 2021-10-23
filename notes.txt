@@ -1,0 +1,14 @@
+https://vuejs.org/v2/cookbook/dockerize-vuejs-app.html
+
+#create container
+docker build -t vue_exchange_vzla:latest .
+
+
+#tag image
+docker tag vue_exchange_vzla:latest gcr.io/ut-265822/vue_exchange_vzla-ui:v1
+
+#push image to google registry
+docker push gcr.io/ut-265822/vue_exchange_vzla-ui:v1
+
+#url-enpoint
+https://vue-exchange-vzla-ui-vilz3brbpa-uc.a.run.app/
