@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <form @submit.prevent="handleSubmit">
+<!--      {{ip_address}}-->
       <h1>{{title}}</h1>
       {{ label_tasa_vzla }}
       <input  v-model="tasa_vzla">
@@ -18,7 +19,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'form-exchange',
   props: {
     msg: String
   },
@@ -32,10 +33,20 @@ export default {
       label_monto_esperado: 'Monto Esperado',
       monto_esperado: 0.00,
       label_monto_vender: 'Monto necesario a vender',
-      monto_vender: 0.00
+      monto_vender: 0.00,
+      ip_address: ''
     }
 },
   methods: {
+    getIpAddress() {
+      fetch('https://api.ipify.org?format=json')
+          .then(x => x.json())
+          .then(({ ip }) => {
+            this.ip_address = ip;
+            this.getTasas(ip);
+            console.log("mounted ---")
+          });
+    },
      clean() {
       this.monto_esperado = 0.0;
       this.monto_vender = 0.0;
@@ -50,10 +61,64 @@ export default {
         console.log('tasa_externa ' + this.tasa_externa);
         console.log('monto_esperado ' + this.monto_esperado);
         console.log('monto_vender ' + this.monto_vender);
+        this.saveTasas(this.tasa_vzla, this.tasa_externa, this.ip_address);
       }
+
+    }, saveTasas(tasa_vzla, tasa_externa, ip_address) {
+      let dato= {
+        "vzlRate": tasa_vzla,
+        "TicoRate": tasa_externa,
+        "ipAddress": ip_address
+      }
+
+      // console.log(dato);
+        fetch(process.env.VUE_APP_ROOT_API+'/v1/exchange', {
+        method: 'post',
+        headers: {
+          Accept: 'application/json',
+           'content-type': 'application/json'
+        },
+        body: JSON.stringify(dato)
+      }).then(res => {
+        // a non-200 response code
+        if (!res.ok) {
+          // create error instance with HTTP status text
+          const error = new Error(res.statusText);
+          error.json = res.json();
+          throw error;
+        }
+        console.log(res);
+      });
+
+    }, getTasas(ip_address) {
+      fetch(process.env.VUE_APP_ROOT_API+'/v1/exchange/' + ip_address, {
+        method: 'get',
+        headers: {
+          // Accept: 'application/json',
+          // 'content-type': 'application/json'
+        }
+      }).then(res => {
+        // a non-200 response code
+        if (!res.ok) {
+          // create error instance with HTTP status text
+          const error = new Error(res.statusText);
+          error.json = res.json();
+          throw error;
+        }
+        return res.json();
+      }).then(res => {
+        // console.log('response: '+JSON.stringify(res))
+        this.tasa_vzla = res.vzlRate;
+        this.tasa_externa = res.ticoRate;
+      })
 
     }
 
+  },mounted() {
+    if (this.ip_address === '') {
+      this.getIpAddress();
+
+    }
   }
 
 }

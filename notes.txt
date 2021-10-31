@@ -1,4 +1,6 @@
 https://vuejs.org/v2/cookbook/dockerize-vuejs-app.html
+https://www.digitalocean.com/community/tutorials/vuejs-working-with-environment-variables
+npm run serve -- --mode=production
 
 
 /----- my builder
